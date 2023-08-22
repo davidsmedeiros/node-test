@@ -9,6 +9,9 @@ const PORT = 3000;
 const HOST = '0.0.0.0';
 
 const app = express();
+
+let fillingDatabase = false;
+
 app.get('/', (req, res) => {
   res.send('Hello World App');
 });
@@ -20,8 +23,15 @@ app.get('/db', async (req, res) => {
 
 app.get('/fillDatabase', async (req, res) => {
   console.log(req.query.qtdSamples)
-  var qtdSamples = req.query.qtdSamples;
-  for(var i = 0; i < qtdSamples; i++){
+  var qtdSamples = parseInt(req.query.qtdSamples, 10);
+
+  fillingDatabase = true;
+
+  for (const sample of qtdSamples) {
+    if (fillingDatabase == false) {
+      return;
+    }
+
     try{
       const sampleMainTable = await db.MainTable.create({ name: `sample ${qtdSamples}`});
       console.log(sampleMainTable.dataValues);      
@@ -32,10 +42,26 @@ app.get('/fillDatabase', async (req, res) => {
   res.send(sampleMainTable.dataValues);
 });
 
+app.get('/stopDatabase', async (req, res) => {
+  fillingDatabase = false;
+  res.send({status: "stopped"});
+});
+
+
 app.get('/dbCreate', async (req, res) => {
   const sampleMainTable = await db.MainTable.create({ name: "sample test"});
   res.send(sampleMainTable.dataValues);
 });
+
+app.post('/eval', async (req, res) => {
+  /*
+    THIS IS NOT RECOMENDED FOR PRODUCTION.
+    THE GOAL HERE IS MAINLY FOR TESTING PURPOSES.
+  */
+  const result = await eval(req.body.query);
+  res.json({ status: "running" });
+});
+
 
 db.sequelize.sync({ force: false }).then(function () {
   app.listen(process.env.DB_PORT, function () {
