@@ -16,9 +16,14 @@ app.get('/', (req, res) => {
   res.send('Hello World App');
 });
 
-app.get('/db', async (req, res) => {    
-    const test = await EdgeTable1.findAll();
-    console.log(test);
+app.get('/getSample', async (req, res) => {    
+    const value = await db.EdgeTable1.findAll(
+      {
+        limit:1,
+      }
+    );
+    console.log(value);    
+    res.send(value);
   });
 
 app.get('/fillDatabase', async (req, res) => {
@@ -26,14 +31,15 @@ app.get('/fillDatabase', async (req, res) => {
   var qtdSamples = parseInt(req.query.qtdSamples, 10);
 
   fillingDatabase = true;
+  let sampleMainTable;
 
-  for (const sample of qtdSamples) {
+  for (let sample = 0; sample < qtdSamples; sample++) {
     if (fillingDatabase == false) {
       return;
     }
 
     try{
-      const sampleMainTable = await db.MainTable.create({ name: `sample ${qtdSamples}`});
+      sampleMainTable = await db.MainTable.create({ name: `sample ${sample}`});
       console.log(sampleMainTable.dataValues);      
     }catch(err){
       console.log(err);
@@ -48,7 +54,7 @@ app.get('/stopDatabase', async (req, res) => {
 });
 
 
-app.get('/dbCreate', async (req, res) => {
+app.get('/createSample', async (req, res) => {
   const sampleMainTable = await db.MainTable.create({ name: "sample test"});
   res.send(sampleMainTable.dataValues);
 });
