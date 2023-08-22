@@ -5,14 +5,15 @@ services:
     restart: on-failure
     build: .
     depends_on:
-      - postgres
+      - postgres:
+        condition: service_healthy
     environment:
       DATABASE_URL: postgres://user:pass@postgres:5432/db
       NODE_ENV: development
       PORT: 3000
     ports:
       - "3000:3000"
-    command: npm run dev
+    command: npm start
     volumes:
       - .:/app/
       - /app/node_modules
@@ -29,4 +30,4 @@ services:
       test: ["CMD-SHELL", "pg_isready -d $${POSTGRES_DB} -U $${POSTGRES_USER}"]
       interval: 1s
       timeout: 1s
-      retries: 1      
+      retries: 1

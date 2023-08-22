@@ -6,9 +6,9 @@ module.exports = (sequelize, Sequelize) => {
             allowNull: false,
             primaryKey: true,    
             unique: true,    
-        },    
+        },
         name: {
-            type: Sequelize.STRING(150),
+            type: Sequelize.STRING,
             allowNull: false
         },
         main_table_id: {
