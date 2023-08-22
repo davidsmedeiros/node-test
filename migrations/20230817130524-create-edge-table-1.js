@@ -4,7 +4,7 @@
 module.exports = {
   async up (queryInterface, Sequelize) {
     return queryInterface.createTable('EdgeTable1', {
-      edge_table_1_id: {
+      id: {
         type: Sequelize.BIGINT,
         autoIncrement: true,
         primaryKey: true,
@@ -29,8 +29,8 @@ module.exports = {
       },
     }).then(() => queryInterface.addIndex(
       'EdgeTable1',
-      ['edge_table_1_id'],
-      { fields: ['edge_table_1_id'] }         
+      ['id'],
+      { fields: ['id'] }         
     )).then(() => queryInterface.addIndex(
       'EdgeTable1',
       ['main_table_id'],

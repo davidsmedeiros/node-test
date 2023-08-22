@@ -1,6 +1,6 @@
 module.exports = (sequelize, Sequelize) => {
     const EdgeTable1 = sequelize.define('EdgeTable1', {
-        edge_table_1_id: {
+        id: {
             type: Sequelize.BIGINT,
             autoIncrement: true,
             allowNull: false,
@@ -19,7 +19,7 @@ module.exports = (sequelize, Sequelize) => {
     {
         indexes: [
           {
-            fields: ['edge_table_1_id'],
+            fields: ['id'],
           },
           {
             fields: ['main_table_id'],
