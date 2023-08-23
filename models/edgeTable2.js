@@ -12,7 +12,7 @@ module.exports = (sequelize, Sequelize) => {
             allowNull: false
         },
         main_table_id: {
-            type: Sequelize.INTEGER,
+            type: Sequelize.BIGINT,
             allowNull: false
         }    
     },
