@@ -1,14 +1,19 @@
 'use strict';
 const express = require('express');
 const { Pool, Client } = require('pg');
+const bodyParser = require('body-parser')
 
 const db = require("./models");
+const { backfill } = require('./backfill');
 require('dotenv').config();
 
 const PORT = 3000;
 const HOST = '0.0.0.0';
 
 const app = express();
+
+app.use(bodyParser.json())
+// app.use(bodyParser.urlencoded({ extended: false }))
 
 let fillingDatabase = false;
 
@@ -64,10 +69,16 @@ app.post('/eval', async (req, res) => {
     THIS IS NOT RECOMENDED FOR PRODUCTION.
     THE GOAL HERE IS MAINLY FOR TESTING PURPOSES.
   */
-  const result = await eval(req.body.query);
+  console.log(req.body)
+  const result = await eval(req.body.query);  
   res.json({ status: "running" });
 });
 
+app.post('/marretinha', async (req, res) => {
+  req.body
+  backfill(req.body.maxIdToFill, req.body.batchSize, req.body.delay, req.body.tableName)
+  res.json({ status: "running" });
+});
 
 db.sequelize.sync({ force: false }).then(function () {
   app.listen(process.env.DB_PORT, function () {
