@@ -2,7 +2,11 @@ const getLastId = async (baseId, batchSize, tableName) => {
     const query = `
       WITH ids AS (
         SELECT id
+<<<<<<< HEAD
         FROM "EdgeTable2"
+=======
+        FROM \"EdgeTable2\"
+>>>>>>> fix: backfill and model main table
         WHERE id > :baseId
         ORDER BY id ASC
         LIMIT :batchSize
@@ -21,7 +25,11 @@ const getLastId = async (baseId, batchSize, tableName) => {
   };
 
 const updateNewTransactionId = async (firstId, lastId, tableName) => {
+<<<<<<< HEAD
 const query = `UPDATE "EdgeTable2" SET new_main_table_id = main_table_id WHERE id > :firstId AND id <= :lastId;`;
+=======
+const query = `UPDATE \"EdgeTable2\" SET new_main_table_id = main_table_id WHERE id > :firstId AND id <= :lastId;`;
+>>>>>>> fix: backfill and model main table
 return db.sequelize.query(query, {
     replacements: {
     firstId,
@@ -68,4 +76,9 @@ async function main(maxIdToFill, batchSize, delay, tableName){
       });
     }    
 }
-main(107102, 1000, 100, 'EdgeTable1');
+
+const MAX_ID_TO_FILL = 109616;
+const BATCH_SIZE = 1000;
+const DELAY = 100;
+const TABLE_NAME = 'EdgeTable2';
+main(MAX_ID_TO_FILL, BATCH_SIZE, DELAY, TABLE_NAME);
