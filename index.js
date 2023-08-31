@@ -13,7 +13,6 @@ const HOST = '0.0.0.0';
 const app = express();
 
 app.use(bodyParser.json())
-// app.use(bodyParser.urlencoded({ extended: false }))
 
 let fillingDatabase = false;
 
