@@ -1,7 +1,7 @@
 module.exports = (sequelize, Sequelize) => {
     const MainTable = sequelize.define('MainTable', {
       id: {
-        type: Sequelize.INTEGER,
+        type: Sequelize.BIGINT,
         autoIncrement: true,
         primaryKey: true,
         allowNull: false,
